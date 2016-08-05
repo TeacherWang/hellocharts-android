@@ -8,6 +8,7 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.FontMetricsInt;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.util.Log;
 
 import lecho.lib.hellocharts.computator.ChartComputator;
 import lecho.lib.hellocharts.model.ChartData;
@@ -20,7 +21,7 @@ import lecho.lib.hellocharts.view.Chart;
  * Abstract renderer implementation, every chart renderer extends this class(although it is not required it helps).
  */
 public abstract class AbstractChartRenderer implements ChartRenderer {
-    public int DEFAULT_LABEL_MARGIN_DP = 4;
+    public int DEFAULT_LABEL_MARGIN_DP = 104;
     protected Chart chart;
     protected ChartComputator computator;
     /**

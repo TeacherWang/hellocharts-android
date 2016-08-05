@@ -15,6 +15,7 @@ public class SubcolumnValue {
     private float diff;
     private int color = ChartUtils.DEFAULT_COLOR;
     private int darkenColor = ChartUtils.DEFAULT_DARKEN_COLOR;
+    private int selectedColor = ChartUtils.COLOR_SELECT;
     private char[] label;
 
     public SubcolumnValue() {
@@ -83,6 +84,10 @@ public class SubcolumnValue {
         return darkenColor;
     }
 
+    public int getSelectedColor(){
+    	return selectedColor;
+    }
+    
     @Deprecated
     public char[] getLabel() {
         return label;

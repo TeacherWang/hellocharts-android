@@ -613,6 +613,7 @@ public class AxesRenderer {
         // Drawing axis name
         final Rect contentRectMargins = computator.getContentRectMinusAxesMargins();
         if (!TextUtils.isEmpty(axis.getName())) {
+        	
             if (isAxisVertical) {
                 canvas.save();
                 canvas.rotate(-90, contentRectMargins.centerY(), contentRectMargins.centerY());

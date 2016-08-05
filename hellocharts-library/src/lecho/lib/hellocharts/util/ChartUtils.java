@@ -14,12 +14,24 @@ public abstract class ChartUtils {
     public static final int COLOR_ORANGE = Color.parseColor("#FFBB33");
     public static final int COLOR_RED = Color.parseColor("#FF4444");
     public static final int[] COLORS = new int[]{COLOR_BLUE, COLOR_VIOLET, COLOR_GREEN, COLOR_ORANGE, COLOR_RED};
+    
+    public static final int COLOR_NORMAL = Color.parseColor("#32c574");
+    public static final int COLOR_SELECT = Color.parseColor("#118202");
+    
     private static final float DARKEN_SATURATION = 1.1f;
     private static final float DARKEN_INTENSITY = 0.9f;
     private static int COLOR_INDEX = 0;
 
     public static final int pickColor() {
         return COLORS[(int) Math.round(Math.random() * (COLORS.length - 1))];
+    }
+    
+    public static final int pickNormalColor(){
+    	return COLOR_NORMAL;
+    }
+    
+    public static final int pickSelectColor(){
+    	return COLOR_SELECT;
     }
 
     public static final int nextColor() {

@@ -22,6 +22,7 @@ public class ColumnChartView extends AbstractChartView implements ColumnChartDat
     private static final String TAG = "ColumnChartView";
     private ColumnChartData data;
     private ColumnChartOnValueSelectListener onValueTouchListener = new DummyColumnChartOnValueSelectListener();
+    private ColumnChartRenderer mColumnChartRenderer;
 
     public ColumnChartView(Context context) {
         this(context, null, 0);
@@ -33,7 +34,8 @@ public class ColumnChartView extends AbstractChartView implements ColumnChartDat
 
     public ColumnChartView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        setChartRenderer(new ColumnChartRenderer(context, this, this));
+        mColumnChartRenderer = new ColumnChartRenderer(context, this, this);
+        setChartRenderer(mColumnChartRenderer);
         setColumnChartData(ColumnChartData.generateDummyData());
     }
 
@@ -66,7 +68,8 @@ public class ColumnChartView extends AbstractChartView implements ColumnChartDat
     @Override
     public void callTouchListener() {
         SelectedValue selectedValue = chartRenderer.getSelectedValue();
-
+        mColumnChartRenderer.chooseValue(selectedValue);
+        
         if (selectedValue.isSet()) {
             SubcolumnValue value = data.getColumns().get(selectedValue.getFirstIndex()).getValues()
                     .get(selectedValue.getSecondIndex());

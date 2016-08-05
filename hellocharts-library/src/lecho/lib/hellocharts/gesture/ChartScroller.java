@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.v4.widget.ScrollerCompat;
+import android.util.Log;
 
 import lecho.lib.hellocharts.computator.ChartComputator;
 import lecho.lib.hellocharts.model.Viewport;
@@ -48,6 +49,11 @@ public class ChartScroller {
         boolean canScrollX = false;
         boolean canScrollY = false;
 
+//        Log.d("ChartScroller", "currentViewport.left = " + currentViewport.left 
+//        		+ ", maxViewport.left = " + maxViewport.left 
+//        		+ ", currentViewport.right = " + currentViewport.right
+//        		+ ", maxViewport.right = " + maxViewport.right);
+        
         if (canScrollLeft && distanceX <= 0) {
             canScrollX = true;
         } else if (canScrollRight && distanceX >= 0) {

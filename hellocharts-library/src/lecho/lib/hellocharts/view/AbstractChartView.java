@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -73,6 +74,8 @@ public abstract class AbstractChartView extends View implements Chart {
     @Override
     protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
         super.onSizeChanged(width, height, oldWidth, oldHeight);
+//        Log.d("AbstractChartView", "onSizeChanged, getWidth() = " + getWidth() + ", getHeight() = " + getHeight());
+        
         chartComputator.setContentRect(getWidth(), getHeight(), getPaddingLeft(), getPaddingTop(), getPaddingRight(),
                 getPaddingBottom());
         chartRenderer.onChartSizeChanged();

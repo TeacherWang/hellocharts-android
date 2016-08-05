@@ -9,6 +9,7 @@ import android.graphics.RectF;
 
 import lecho.lib.hellocharts.model.Column;
 import lecho.lib.hellocharts.model.ColumnChartData;
+import lecho.lib.hellocharts.model.SelectedValue;
 import lecho.lib.hellocharts.model.SelectedValue.SelectedValueType;
 import lecho.lib.hellocharts.model.SubcolumnValue;
 import lecho.lib.hellocharts.model.Viewport;
@@ -21,7 +22,7 @@ import lecho.lib.hellocharts.view.Chart;
  */
 public class ColumnChartRenderer extends AbstractChartRenderer {
     public static final int DEFAULT_SUBCOLUMN_SPACING_DP = 1;
-    public static final int DEFAULT_COLUMN_TOUCH_ADDITIONAL_WIDTH_DP = 4;
+    public static final int DEFAULT_COLUMN_TOUCH_ADDITIONAL_WIDTH_DP = 0; // 点击放大的额外宽度
 
     private static final int MODE_DRAW = 0;
     private static final int MODE_CHECK_TOUCH = 1;
@@ -59,6 +60,8 @@ public class ColumnChartRenderer extends AbstractChartRenderer {
     private float baseValue;
 
     private Viewport tempMaximumViewport = new Viewport();
+    
+    protected SelectedValue mChoosedValue = new SelectedValue();
 
     public ColumnChartRenderer(Context context, Chart chart, ColumnChartDataProvider dataProvider) {
         super(context, chart);
@@ -98,14 +101,14 @@ public class ColumnChartRenderer extends AbstractChartRenderer {
         final ColumnChartData data = dataProvider.getColumnChartData();
         if (data.isStacked()) {
             drawColumnForStacked(canvas);
-            if (isTouched()) {
+//            if (isTouched()) {
                 highlightColumnForStacked(canvas);
-            }
+//            }
         } else {
             drawColumnsForSubcolumns(canvas);
-            if (isTouched()) {
+//            if (isTouched()) {
                 highlightColumnsForSubcolumns(canvas);
-            }
+//            }
         }
     }
 
@@ -184,8 +187,8 @@ public class ColumnChartRenderer extends AbstractChartRenderer {
     private void highlightColumnsForSubcolumns(Canvas canvas) {
         final ColumnChartData data = dataProvider.getColumnChartData();
         final float columnWidth = calculateColumnWidth();
-        Column column = data.getColumns().get(selectedValue.getFirstIndex());
-        processColumnForSubcolumns(canvas, column, columnWidth, selectedValue.getFirstIndex(), MODE_HIGHLIGHT);
+        Column column = data.getColumns().get(mChoosedValue.getFirstIndex());
+        processColumnForSubcolumns(canvas, column, columnWidth, mChoosedValue.getFirstIndex(), MODE_HIGHLIGHT);
     }
 
     private void checkTouchForSubcolumns(float touchX, float touchY) {
@@ -206,8 +209,9 @@ public class ColumnChartRenderer extends AbstractChartRenderer {
                                             int mode) {
         // For n subcolumns there will be n-1 spacing and there will be one
         // subcolumn for every columnValue
-        float subcolumnWidth = (columnWidth - (subcolumnSpacing * (column.getValues().size() - 1)))
-                / column.getValues().size();
+//        float subcolumnWidth = (columnWidth - (subcolumnSpacing * (column.getValues().size() - 1)))
+//                / column.getValues().size();
+        float subcolumnWidth = ChartUtils.dp2px(density, 20);
         if (subcolumnWidth < 1) {
             subcolumnWidth = 1;
         }
@@ -261,8 +265,8 @@ public class ColumnChartRenderer extends AbstractChartRenderer {
         final ColumnChartData data = dataProvider.getColumnChartData();
         final float columnWidth = calculateColumnWidth();
         // Columns are indexes from 0 to n, column index is also column X value
-        Column column = data.getColumns().get(selectedValue.getFirstIndex());
-        processColumnForStacked(canvas, column, columnWidth, selectedValue.getFirstIndex(), MODE_HIGHLIGHT);
+        Column column = data.getColumns().get(mChoosedValue.getFirstIndex());
+        processColumnForStacked(canvas, column, columnWidth, mChoosedValue.getFirstIndex(), MODE_HIGHLIGHT);
     }
 
     private void checkTouchForStacked(float touchX, float touchY) {
@@ -327,8 +331,8 @@ public class ColumnChartRenderer extends AbstractChartRenderer {
 
     private void highlightSubcolumn(Canvas canvas, Column column, SubcolumnValue columnValue, int valueIndex,
                                     boolean isStacked) {
-        if (selectedValue.getSecondIndex() == valueIndex) {
-            columnPaint.setColor(columnValue.getDarkenColor());
+        if (mChoosedValue.getSecondIndex() == valueIndex) {
+            columnPaint.setColor(columnValue.getSelectedColor());
             canvas.drawRect(drawRect.left - touchAdditionalWidth, drawRect.top, drawRect.right + touchAdditionalWidth,
                     drawRect.bottom, columnPaint);
             if (column.hasLabels() || column.hasLabelsOnlyForSelected()) {
@@ -345,8 +349,11 @@ public class ColumnChartRenderer extends AbstractChartRenderer {
 
     private float calculateColumnWidth() {
         // columnWidht should be at least 2 px
-        float columnWidth = fillRatio * computator.getContentRectMinusAllMargins().width() / computator
-                .getVisibleViewport().width();
+//        float columnWidth = fillRatio * computator.getContentRectMinusAllMargins().width() / computator
+//                .getVisibleViewport().width();
+    	
+    	float columnWidth = ChartUtils.dp2px(density, 20);
+    	
         if (columnWidth < 2) {
             columnWidth = 2;
         }
@@ -419,4 +426,13 @@ public class ColumnChartRenderer extends AbstractChartRenderer {
 
     }
 
+    @Override
+    public void selectValue(SelectedValue selectedValue) {
+        this.selectedValue.set(selectedValue);
+        this.mChoosedValue.set(selectedValue);
+    }
+    
+    public void chooseValue(SelectedValue selectedValue){
+    	this.mChoosedValue.set(selectedValue);
+    }
 }
